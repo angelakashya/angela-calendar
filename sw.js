@@ -1,4 +1,4 @@
-const CACHE = 'angela-calendar-v2';
+const CACHE = 'angela-calendar-v3';
 const ASSETS = [
   './index.html',
   './manifest.json',

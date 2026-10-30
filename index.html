@@ -24,902 +24,864 @@
       --purple-soft: #C89EE0;
       --purple-pale: #EDD9FA;
       --pink:        #E879A8;
-      --pink-pale:   #FCE4F1;
       --border:      #E2C8F5;
       --text:        #2E1445;
       --muted:       #9A7BB5;
-      --radius:      14px;
-      --header-h:    60px;
-      --bottom-h:    64px;
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --hh: 56px;
+      --bh: 68px;
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    html, body {
+    html { height: 100%; }
+
+    body {
       height: 100%; overflow: hidden;
-      font-family: 'Nunito', system-ui, sans-serif;
-      background: var(--bg); color: var(--text); font-size: 15px;
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg); color: var(--text);
+      font-size: 16px;
     }
 
-    /* ── HEADER ── */
+    /* ─── HEADER ─── */
     header {
-      position: fixed; top: 0; left: 0; right: 0;
-      height: var(--header-h);
-      background: linear-gradient(135deg, var(--purple-deep), var(--purple-mid));
-      display: flex; align-items: center;
-      padding: 0 16px;
-      z-index: 50; gap: 10px;
+      position: fixed; inset: 0 0 auto 0;
+      height: var(--hh);
       padding-top: env(safe-area-inset-top, 0px);
+      background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple-mid) 100%);
+      display: flex; align-items: center;
+      padding-left: 14px; padding-right: 14px;
+      gap: 8px; z-index: 40;
     }
-    header::before {
-      content:''; position:absolute; inset:0;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
-      background-size: 18px 18px; pointer-events:none;
-    }
+
     .brand {
+      flex: 1; min-width: 0;
       font-family: 'Dancing Script', cursive;
-      font-size: 24px; color: #fff;
-      text-shadow: 0 2px 10px rgba(232,121,168,0.4);
-      line-height: 1; flex: 1; display: flex; align-items: center; gap: 8px;
-      position: relative; z-index: 1;
+      font-size: 22px; font-weight: 700;
+      color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .brand em { font-style: italic; color: #F9C4E8; }
-    .header-controls {
-      display: flex; align-items: center; gap: 6px;
-      position: relative; z-index: 1;
-    }
-    #month-label {
-      font-size: 13px; font-weight: 700; color: #fff;
-      min-width: 100px; text-align: center;
-    }
-    .btn-nav {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(255,255,255,0.25);
+    .brand em { color: #FFC4E8; font-style: italic; }
+
+    .h-nav { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+    .btn-icon {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.3);
       background: rgba(255,255,255,0.12);
-      color: #fff; border-radius: 50%; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      touch-action: manipulation;
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; touch-action: manipulation;
     }
-    .btn-nav:active { background: rgba(255,255,255,0.3); }
+    .btn-icon:active { background: rgba(255,255,255,0.3); }
+
+    #month-label {
+      font-size: 13px; font-weight: 800; color: #fff;
+      min-width: 72px; text-align: center;
+    }
+
     .btn-today {
-      padding: 6px 12px; border: 1px solid rgba(255,255,255,0.3);
-      border-radius: 20px; background: rgba(255,255,255,0.15);
-      color: #fff; font-size: 12px; font-weight: 700;
+      height: 32px; padding: 0 12px;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      border-radius: 16px; background: rgba(255,255,255,0.15);
+      color: #fff; font-size: 12px; font-weight: 800;
       font-family: inherit; cursor: pointer; touch-action: manipulation;
     }
-    .btn-today:active { background: rgba(255,255,255,0.3); }
+    .btn-today:active { background: rgba(255,255,255,0.35); }
 
-    /* ── BOTTOM NAV ── */
-    .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      height: calc(var(--bottom-h) + var(--safe-bottom));
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      display: flex; align-items: flex-start;
-      padding-top: 8px;
-      z-index: 50;
-    }
-    .nav-item {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; gap: 3px;
-      cursor: pointer; touch-action: manipulation;
-      padding: 4px 0;
-      background: none; border: none; font-family: inherit;
-    }
-    .nav-item span {
-      font-size: 11px; font-weight: 700;
-      color: var(--muted);
-    }
-    .nav-item svg { color: var(--muted); }
-    .nav-item.active span { color: var(--purple-mid); }
-    .nav-item.active svg { color: var(--pink); }
-    .nav-item.add-btn {
-      position: relative; top: -18px;
-    }
-    .nav-item.add-btn .add-circle {
-      width: 52px; height: 52px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--pink), var(--purple));
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 16px rgba(155,89,196,0.45);
-    }
-    .nav-item.add-btn span { color: var(--purple-mid); margin-top: 2px; }
-
-    /* ── MAIN SCROLL AREA ── */
-    .app-main {
+    /* ─── SCROLL AREA ─── */
+    .app-scroll {
       position: fixed;
-      top: var(--header-h);
-      bottom: calc(var(--bottom-h) + var(--safe-bottom));
+      top: var(--hh);
+      bottom: calc(var(--bh) + env(safe-area-inset-bottom, 0px));
       left: 0; right: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      display: flex; flex-direction: column;
     }
 
-    /* ── MONTH VIEW ── */
-    #view-month { display: flex; flex-direction: column; flex: 1; }
-    .cal-dow-row {
-      display: grid; grid-template-columns: repeat(7,1fr);
+    /* ─── MONTH VIEW ─── */
+    .v-month { display: none; flex-direction: column; min-height: 100%; }
+    .v-month.active { display: flex; }
+
+    .dow-row {
+      display: grid; grid-template-columns: repeat(7, 1fr);
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       position: sticky; top: 0; z-index: 5;
     }
-    .cal-dow {
-      text-align: center; font-size: 11px; font-weight: 800;
-      color: var(--purple-mid); padding: 8px 0;
-      text-transform: uppercase; letter-spacing: 0.04em;
+    .dow-cell {
+      text-align: center; padding: 7px 0;
+      font-size: 10px; font-weight: 800; color: var(--purple-mid);
+      text-transform: uppercase; letter-spacing: 0.05em;
     }
-    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); flex: 1; }
+
+    .cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      flex: 1;
+    }
     .cal-cell {
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 4px 3px; min-height: 72px;
-      background: var(--surface); cursor: pointer;
-      touch-action: manipulation;
+      min-height: 64px; padding: 3px 2px;
+      background: var(--surface);
+      display: flex; flex-direction: column;
+      cursor: pointer; touch-action: manipulation;
+      user-select: none;
     }
     .cal-cell:active { background: var(--purple-pale); }
-    .cal-cell.other-month { background: #FAF4FF; }
-    .cal-cell.other-month .day-num { color: #D5B8EC; }
-    .cal-cell.today .day-num {
+    .cal-cell.other { background: #FAF5FF; }
+    .cal-cell.other .d-num { color: #D0B8E8; }
+
+    .d-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; color: var(--purple-mid);
+      align-self: center;
+    }
+    .cal-cell.today .d-num {
       background: linear-gradient(135deg, var(--pink), var(--purple));
-      color: #fff; border-radius: 50%; font-weight: 800;
-      width: 26px; height: 26px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .day-num {
-      font-size: 13px; font-weight: 700; color: var(--purple-mid);
-      width: 26px; height: 26px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .cal-events { margin-top: 2px; display: flex; flex-direction: column; gap: 2px; }
-    .cal-ev {
-      font-size: 10px; padding: 2px 4px; border-radius: 6px;
-      color: #fff; white-space: nowrap; overflow: hidden;
-      text-overflow: ellipsis; font-weight: 700;
-    }
-    .cal-ev-dot {
-      width: 6px; height: 6px; border-radius: 50%; margin: 1px auto;
+      color: #fff; font-weight: 800;
     }
 
-    /* ── DAY VIEW ── */
-    #view-day { display: none; flex-direction: column; flex: 1; }
-    .day-header {
-      padding: 14px 16px 10px;
+    .dot-row {
+      display: flex; justify-content: center; gap: 2px;
+      flex-wrap: wrap; margin-top: 2px; padding: 0 2px;
+    }
+    .ev-dot {
+      width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    /* ─── DAY VIEW ─── */
+    .v-day { display: none; flex-direction: column; }
+    .v-day.active { display: flex; }
+
+    .day-hdr {
+      padding: 12px 16px 8px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
+      font-size: 15px; font-weight: 800; color: var(--purple-deep);
     }
-    .day-title {
-      font-size: 17px; font-weight: 800; color: var(--purple-deep);
+
+    .day-timeline {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      flex: 1;
     }
-    .day-body {
-      display: grid; grid-template-columns: 44px 1fr;
-      flex: 1; overflow-y: auto;
+    .t-labels {}
+    .t-label {
+      height: 52px;
+      display: flex; align-items: flex-start; justify-content: flex-end;
+      padding: 3px 6px 0 0;
+      font-size: 10px; font-weight: 700; color: var(--muted);
     }
-    .time-col {}
-    .time-label {
-      height: 56px; display: flex; align-items: flex-start;
-      justify-content: flex-end; padding-right: 8px; padding-top: 2px;
-      font-size: 10px; color: var(--muted); font-weight: 700;
-    }
-    .day-day-col { border-left: 1px solid var(--border); position: relative; }
-    .day-hour {
-      height: 56px; border-bottom: 1px solid #EFE0FA;
+    .t-slots { border-left: 1px solid var(--border); position: relative; }
+    .t-slot {
+      height: 52px; border-bottom: 1px solid #EFE5FA;
       cursor: pointer; touch-action: manipulation;
     }
-    .day-hour:active { background: var(--purple-pale); }
+    .t-slot:active { background: var(--purple-pale); }
     .day-ev {
-      position: absolute; left: 3px; right: 3px; border-radius: 8px;
-      color: #fff; font-size: 13px; padding: 5px 8px;
-      overflow: hidden; cursor: pointer; z-index: 1; font-weight: 700;
+      position: absolute; left: 4px; right: 4px;
+      border-radius: 10px; color: #fff;
+      padding: 5px 8px; font-size: 13px; font-weight: 700;
+      overflow: hidden; cursor: pointer; z-index: 2;
       touch-action: manipulation;
     }
 
-    /* ── AGENDA VIEW (upcoming) ── */
-    #view-agenda { display: none; flex-direction: column; flex: 1; padding: 16px; gap: 10px; }
-    .agenda-day-group { margin-bottom: 4px; }
-    .agenda-day-label {
-      font-size: 11px; font-weight: 800; color: var(--purple-mid);
-      text-transform: uppercase; letter-spacing: 0.06em;
-      margin-bottom: 6px; padding-left: 2px;
-    }
-    .agenda-item {
-      background: var(--surface); border-radius: var(--radius);
-      padding: 12px 14px; margin-bottom: 6px;
-      border-left: 4px solid var(--pink);
-      cursor: pointer; touch-action: manipulation;
-      box-shadow: 0 1px 6px rgba(74,31,110,0.07);
-    }
-    .agenda-item:active { opacity: 0.85; }
-    .agenda-item .ag-title { font-size: 15px; font-weight: 800; color: var(--text); }
-    .agenda-item .ag-time  { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 600; }
-    .agenda-empty {
-      display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 60px 20px; gap: 12px;
-      color: var(--muted); text-align: center;
-    }
-    .agenda-empty svg { opacity: 0.3; }
-    .agenda-empty p { font-size: 14px; font-weight: 700; }
+    /* ─── AGENDA VIEW ─── */
+    .v-agenda { display: none; flex-direction: column; padding: 14px; gap: 8px; }
+    .v-agenda.active { display: flex; }
 
-    /* ── MODAL (bottom sheet on mobile) ── */
-    .modal-overlay {
+    .ag-date-label {
+      font-size: 11px; font-weight: 800;
+      color: var(--purple-mid); text-transform: uppercase;
+      letter-spacing: 0.06em; margin: 8px 0 4px; padding-left: 2px;
+    }
+    .ag-item {
+      background: var(--surface); border-radius: 14px;
+      border-left: 4px solid var(--pink);
+      padding: 12px 14px; margin-bottom: 4px;
+      cursor: pointer; touch-action: manipulation;
+      box-shadow: 0 1px 5px rgba(74,31,110,0.08);
+    }
+    .ag-item:active { opacity: 0.8; }
+    .ag-title { font-size: 15px; font-weight: 800; }
+    .ag-time  { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 600; }
+
+    .ag-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px; padding: 60px 20px; text-align: center;
+      color: var(--muted);
+    }
+    .ag-empty svg { opacity: 0.25; }
+    .ag-empty p { font-size: 14px; font-weight: 700; }
+
+    /* ─── BOTTOM NAV ─── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: calc(var(--bh) + env(safe-area-inset-bottom, 0px));
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      background: #fff;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: stretch;
+      z-index: 40;
+    }
+    .bn-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 3px;
+      border: none; background: none; font-family: inherit;
+      cursor: pointer; touch-action: manipulation; padding: 6px 0 4px;
+      color: var(--muted);
+    }
+    .bn-item span { font-size: 10px; font-weight: 800; }
+    .bn-item.active { color: var(--purple-mid); }
+    .bn-item.active svg { color: var(--pink); }
+
+    .bn-add {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding-top: 2px;
+      border: none; background: none; cursor: pointer; touch-action: manipulation;
+    }
+    .add-circle {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 14px rgba(155,89,196,0.45);
+      margin-top: -14px;
+    }
+    .bn-add span { font-size: 10px; font-weight: 800; color: var(--muted); margin-top: 2px; }
+
+    /* ─── MODAL SHEET ─── */
+    .overlay {
       display: none; position: fixed; inset: 0;
-      background: rgba(74,31,110,0.5); z-index: 100;
-      align-items: flex-end; justify-content: center;
+      background: rgba(46,20,69,0.55); z-index: 80;
+      align-items: flex-end;
     }
-    .modal-overlay.open { display: flex; }
-    .modal {
+    .overlay.open { display: flex; }
+
+    .sheet {
+      width: 100%; max-height: 94vh;
       background: var(--surface);
-      border-radius: 24px 24px 0 0;
-      padding: 0 0 calc(20px + var(--safe-bottom));
-      width: 100%; max-width: 560px;
-      max-height: 92vh;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      box-shadow: 0 -8px 40px rgba(74,31,110,0.25);
-      animation: sheetup 0.28s cubic-bezier(.4,0,.2,1);
+      border-radius: 22px 22px 0 0;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      box-shadow: 0 -6px 30px rgba(74,31,110,0.2);
+      animation: rise 0.26s cubic-bezier(.3,0,.2,1);
+      padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
     }
-    @keyframes sheetup {
+    @keyframes rise {
       from { transform: translateY(100%); }
       to   { transform: translateY(0); }
     }
-    .modal-handle {
-      width: 40px; height: 4px; border-radius: 2px;
-      background: var(--purple-soft); margin: 12px auto 0;
+
+    .sheet-handle {
+      width: 38px; height: 4px; border-radius: 2px;
+      background: var(--purple-soft); margin: 10px auto 0;
     }
-    .modal-inner { padding: 16px 20px; }
-    .modal-title-row {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    .sheet-body { padding: 14px 18px 4px; }
+
+    .sheet-title {
+      font-size: 19px; font-weight: 800; color: var(--purple-deep);
+      margin-bottom: 18px;
     }
-    .modal h2 {
-      font-size: 20px; font-weight: 800; color: var(--purple-deep);
-    }
-    .form-row { margin-bottom: 14px; }
-    .form-row label {
+
+    .f-row { margin-bottom: 13px; }
+    .f-row label {
       display: block; font-size: 11px; font-weight: 800;
       color: var(--purple-mid); text-transform: uppercase;
       letter-spacing: 0.07em; margin-bottom: 5px;
     }
-    .form-row input, .form-row select, .form-row textarea {
-      width: 100%; padding: 12px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 12px; font-size: 15px;
-      font-family: inherit; background: var(--bg);
-      color: var(--text); font-weight: 600;
+    .f-row input,
+    .f-row select,
+    .f-row textarea {
+      width: 100%; padding: 13px 14px;
+      border: 1.5px solid var(--border); border-radius: 12px;
+      font-size: 16px; font-family: inherit;
+      background: var(--bg); color: var(--text); font-weight: 600;
       -webkit-appearance: none; appearance: none;
     }
-    .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+    .f-row input:focus,
+    .f-row select:focus,
+    .f-row textarea:focus {
       outline: none; border-color: var(--purple);
       box-shadow: 0 0 0 3px var(--purple-pale);
     }
-    .form-row textarea { resize: none; height: 80px; }
-    .form-row-inline { display: flex; gap: 10px; }
-    .form-row-inline .form-row { flex: 1; }
-    .recurrence-block { display: none; }
-    .recurrence-block.show { display: block; }
-    .color-row { display: flex; gap: 10px; flex-wrap: wrap; }
-    .color-swatch {
-      width: 30px; height: 30px; border-radius: 50%; cursor: pointer;
+    .f-row textarea { resize: none; height: 78px; }
+
+    .f-2col { display: flex; gap: 10px; }
+    .f-2col .f-row { flex: 1; }
+
+    .recur-extra { display: none; }
+    .recur-extra.show { display: block; }
+
+    .color-swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+    .swatch {
+      width: 32px; height: 32px; border-radius: 50%;
       border: 3px solid transparent;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      touch-action: manipulation;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+      cursor: pointer; touch-action: manipulation;
     }
-    .color-swatch.selected { border-color: var(--purple-deep); }
-    .modal-actions {
-      display: flex; gap: 10px; margin-top: 8px;
-      padding-top: 14px; border-top: 1px solid var(--border);
+    .swatch.on { border-color: var(--purple-deep); }
+
+    .sheet-actions {
+      display: flex; gap: 10px;
+      padding: 14px 18px 0;
+      border-top: 1px solid var(--border); margin-top: 6px;
     }
     .btn-cancel {
-      flex: 1; padding: 14px; border: 1.5px solid var(--border);
-      border-radius: 14px; background: transparent;
+      flex: 1; padding: 14px; border-radius: 13px;
+      border: 1.5px solid var(--border); background: transparent;
       font-size: 15px; font-family: inherit; font-weight: 700;
       color: var(--muted); cursor: pointer; touch-action: manipulation;
     }
     .btn-save {
-      flex: 2; padding: 14px; border: none; border-radius: 14px;
+      flex: 2; padding: 14px; border-radius: 13px; border: none;
       background: linear-gradient(135deg, var(--pink), var(--purple));
       color: #fff; font-size: 15px; font-weight: 800;
-      font-family: inherit; cursor: pointer;
+      font-family: inherit; cursor: pointer; touch-action: manipulation;
       box-shadow: 0 4px 14px rgba(155,89,196,0.4);
-      touch-action: manipulation;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
     }
-    .btn-delete {
-      padding: 14px 18px; border: 1.5px solid var(--pink);
-      border-radius: 14px; background: transparent;
-      color: var(--pink); font-size: 15px; font-family: inherit;
-      font-weight: 700; cursor: pointer; touch-action: manipulation;
-      display: flex; align-items: center; gap: 6px;
+    .btn-del {
+      padding: 14px 16px; border-radius: 13px;
+      border: 1.5px solid var(--pink); background: transparent;
+      color: var(--pink); font-size: 15px; font-weight: 700;
+      font-family: inherit; cursor: pointer; touch-action: manipulation;
+      display: none; align-items: center; gap: 6px;
     }
-    .btn-delete:active { background: var(--pink); color: #fff; }
+    .btn-del.show { display: flex; }
+    .btn-del:active { background: var(--pink); color: #fff; }
 
-    /* ── NOTIFICATION TOAST ── */
-    .notif-badge {
-      position: fixed; top: calc(var(--header-h) + 10px); left: 16px; right: 16px;
-      background: linear-gradient(135deg, var(--purple-deep), var(--purple-mid));
-      color: #fff; padding: 14px 16px; border-radius: 14px;
-      font-size: 14px; font-weight: 700;
-      box-shadow: 0 6px 24px rgba(74,31,110,0.35);
-      z-index: 200; display: none;
-      align-items: center; gap: 10px;
+    /* ─── TOAST ─── */
+    .toast {
+      display: none; position: fixed;
+      top: calc(var(--hh) + 8px); left: 14px; right: 14px;
+      background: var(--purple-deep); color: #fff;
+      padding: 13px 16px; border-radius: 13px;
+      font-size: 14px; font-weight: 700; gap: 10px;
+      box-shadow: 0 4px 20px rgba(74,31,110,0.4);
+      z-index: 90; align-items: center;
     }
-    .notif-badge.show { display: flex; animation: slidedown 0.25s ease; }
-    @keyframes slidedown {
-      from { transform: translateY(-10px); opacity: 0; }
-      to   { transform: translateY(0); opacity: 1; }
-    }
-
-    /* desktop layout override */
-    @media (min-width: 700px) {
-      .bottom-nav { display: none; }
-      .app-main { bottom: 0; }
-      header { padding: 0 24px; }
-      .brand { font-size: 28px; }
-      #month-label { min-width: 180px; font-size: 16px; }
-      .desktop-view-btns {
-        display: flex; gap: 5px; margin-left: 12px;
-      }
-      .view-btn-desk {
-        padding: 7px 16px; border: 1px solid rgba(255,255,255,0.25);
-        border-radius: 20px; background: rgba(255,255,255,0.12);
-        color: rgba(255,255,255,0.75); cursor: pointer;
-        font-size: 13px; font-weight: 700; font-family: inherit;
-        transition: background 0.15s;
-      }
-      .view-btn-desk.active { background: var(--pink); border-color: var(--pink); color: #fff; }
-      .view-btn-desk:hover { background: rgba(255,255,255,0.22); color: #fff; }
-      .cal-cell { min-height: 100px; }
-      .cal-ev { font-size: 11px; padding: 2px 6px; }
-      .modal-overlay { align-items: center; }
-      .modal {
-        border-radius: 20px;
-        max-width: 480px;
-        max-height: 88vh;
-        margin-bottom: 0;
-      }
-      @keyframes sheetup {
-        from { transform: scale(0.96); opacity: 0; }
-        to   { transform: scale(1);    opacity: 1; }
-      }
-      .modal-handle { display: none; }
+    .toast.show { display: flex; animation: td .22s ease; }
+    @keyframes td {
+      from { opacity:0; transform:translateY(-6px); }
+      to   { opacity:1; transform:translateY(0); }
     }
   </style>
 </head>
 <body>
 
-<!-- SVG ICONS -->
-<svg style="display:none">
-  <symbol id="ic-month" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+<!-- SVG SPRITE -->
+<svg style="display:none" aria-hidden="true">
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="18" rx="3"/>
+    <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+    <line x1="3" y1="10" x2="21" y2="10"/>
   </symbol>
-  <symbol id="ic-day" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="9"/><line x1="12" y1="7" x2="12" y2="12"/><line x1="12" y1="12" x2="15" y2="14"/>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/>
+    <polyline points="12 7 12 12 15 14"/>
   </symbol>
-  <symbol id="ic-agenda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+  <symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+    <line x1="8" y1="18" x2="21" y2="18"/>
+    <circle cx="3" cy="6" r="1" fill="currentColor"/>
+    <circle cx="3" cy="12" r="1" fill="currentColor"/>
+    <circle cx="3" cy="18" r="1" fill="currentColor"/>
   </symbol>
-  <symbol id="ic-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+  <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
     <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
   </symbol>
-  <symbol id="ic-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+  <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
   </symbol>
-  <symbol id="ic-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="3 6 5 6 21 6"/>
+    <path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/>
   </symbol>
-  <symbol id="ic-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="20 6 9 17 4 12"/>
-  </symbol>
-  <symbol id="ic-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-  </symbol>
-  <symbol id="ic-chevron-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <symbol id="i-chev-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="15 18 9 12 15 6"/>
   </symbol>
-  <symbol id="ic-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <symbol id="i-chev-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="9 18 15 12 9 6"/>
   </symbol>
-  <symbol id="ic-butterfly" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 12 C10 8 4 6 3 9 C2 12 7 14 12 12Z"/>
-    <path d="M12 12 C14 8 20 6 21 9 C22 12 17 14 12 12Z"/>
-    <path d="M12 12 C10 16 5 18 4 15 C3 12 7 11 12 12Z"/>
-    <path d="M12 12 C14 16 19 18 20 15 C21 12 17 11 12 12Z"/>
+  <symbol id="i-butterfly" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 12C10 8 4 6 3 9s4 5 9 3z"/>
+    <path d="M12 12c2-4 8-6 9-3s-4 5-9 3z"/>
+    <path d="M12 12c-2 4-7 6-8 3s3-4 8-3z"/>
+    <path d="M12 12c2 4 7 6 8 3s-3-4-8-3z"/>
     <line x1="12" y1="10" x2="12" y2="14"/>
-  </symbol>
-  <symbol id="ic-paw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="7" cy="8" r="1.5"/><circle cx="12" cy="6.5" r="1.5"/><circle cx="17" cy="8" r="1.5"/><circle cx="5" cy="12" r="1.5"/>
-    <path d="M12 21 C8 21 5.5 18 6 15 C6.5 12.5 9 11 12 11 C15 11 17.5 12.5 18 15 C18.5 18 16 21 12 21Z"/>
   </symbol>
 </svg>
 
 <!-- HEADER -->
 <header>
   <div class="brand">
-    <svg width="22" height="22" style="color:#F9C4E8;flex-shrink:0"><use href="#ic-butterfly"/></svg>
-    Calendário da <em>Angela</em>
+    <svg width="20" height="20" style="vertical-align:middle;margin-right:6px;color:#FFC4E8"><use href="#i-butterfly"/></svg>Calendário da <em>Angela</em>
   </div>
-  <div class="header-controls">
+  <div class="h-nav">
     <button class="btn-today" onclick="goToday()">Hoje</button>
-    <button class="btn-nav" onclick="navigate(-1)"><svg width="16" height="16"><use href="#ic-chevron-left"/></svg></button>
+    <button class="btn-icon" onclick="nav(-1)" aria-label="Anterior">
+      <svg width="16" height="16"><use href="#i-chev-l"/></svg>
+    </button>
     <span id="month-label"></span>
-    <button class="btn-nav" onclick="navigate(1)"><svg width="16" height="16"><use href="#ic-chevron-right"/></svg></button>
-    <!-- desktop view buttons -->
-    <div class="desktop-view-btns" style="display:none" id="desktop-view-btns">
-      <button class="view-btn-desk active" onclick="switchView('month')">Mês</button>
-      <button class="view-btn-desk" onclick="switchView('day')">Dia</button>
-      <button class="view-btn-desk" onclick="switchView('agenda')">Agenda</button>
-    </div>
+    <button class="btn-icon" onclick="nav(1)" aria-label="Próximo">
+      <svg width="16" height="16"><use href="#i-chev-r"/></svg>
+    </button>
   </div>
 </header>
 
-<!-- MAIN CONTENT -->
-<div class="app-main" id="app-main">
+<!-- SCROLL CONTAINER -->
+<div class="app-scroll" id="app-scroll">
 
-  <!-- MONTH VIEW -->
-  <div id="view-month">
-    <div class="cal-dow-row" id="dow-row"></div>
+  <!-- MONTH -->
+  <div class="v-month active" id="v-month">
+    <div class="dow-row" id="dow-row"></div>
     <div class="cal-grid" id="cal-grid"></div>
   </div>
 
-  <!-- DAY VIEW -->
-  <div id="view-day">
-    <div class="day-header">
-      <div class="day-title" id="day-header-label"></div>
-    </div>
-    <div class="day-body" id="day-body"></div>
+  <!-- DAY -->
+  <div class="v-day" id="v-day">
+    <div class="day-hdr" id="day-hdr"></div>
+    <div class="day-timeline" id="day-timeline"></div>
   </div>
 
-  <!-- AGENDA VIEW -->
-  <div id="view-agenda">
-    <div id="agenda-list"></div>
+  <!-- AGENDA -->
+  <div class="v-agenda" id="v-agenda">
+    <div id="agenda-inner"></div>
   </div>
 
 </div>
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="nav-item active" id="nav-month" onclick="switchView('month')">
-    <svg width="22" height="22"><use href="#ic-month"/></svg>
+  <button class="bn-item active" id="bn-month" onclick="setView('month')">
+    <svg width="22" height="22"><use href="#i-cal"/></svg>
     <span>Mês</span>
   </button>
-  <button class="nav-item" id="nav-day" onclick="switchView('day')">
-    <svg width="22" height="22"><use href="#ic-day"/></svg>
+  <button class="bn-item" id="bn-day" onclick="setView('day')">
+    <svg width="22" height="22"><use href="#i-clock"/></svg>
     <span>Dia</span>
   </button>
-  <button class="nav-item add-btn" onclick="openModal()">
+  <button class="bn-add" onclick="openNew()">
     <div class="add-circle">
-      <svg width="26" height="26" style="color:#fff"><use href="#ic-plus"/></svg>
+      <svg width="24" height="24" style="color:#fff"><use href="#i-plus"/></svg>
     </div>
     <span>Novo</span>
   </button>
-  <button class="nav-item" id="nav-agenda" onclick="switchView('agenda')">
-    <svg width="22" height="22"><use href="#ic-agenda"/></svg>
+  <button class="bn-item" id="bn-agenda" onclick="setView('agenda')">
+    <svg width="22" height="22"><use href="#i-list"/></svg>
     <span>Agenda</span>
   </button>
-  <button class="nav-item" onclick="openModal()">
-    <svg width="22" height="22"><use href="#ic-bell"/></svg>
-    <span>Eventos</span>
+  <button class="bn-item" onclick="openNew()">
+    <svg width="22" height="22"><use href="#i-bell"/></svg>
+    <span>Lemb.</span>
   </button>
 </nav>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal" id="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-inner">
-      <div class="modal-title-row">
-        <svg width="20" height="20" style="color:var(--pink)"><use href="#ic-star"/></svg>
-        <h2 id="modal-title">Novo evento</h2>
+<!-- MODAL SHEET -->
+<div class="overlay" id="overlay" onclick="overlayTap(event)">
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-body">
+      <div class="sheet-title" id="sheet-title">Novo evento</div>
+
+      <div class="f-row">
+        <label>Título *</label>
+        <input id="f-title" type="text" placeholder="Nome do evento" autocomplete="off"/>
       </div>
-      <div class="form-row">
-        <label>Título</label>
-        <input type="text" id="ev-title" placeholder="Nome do evento"/>
-      </div>
-      <div class="form-row-inline">
-        <div class="form-row">
+
+      <div class="f-2col">
+        <div class="f-row">
           <label>Data</label>
-          <input type="date" id="ev-date"/>
+          <input id="f-date" type="date"/>
         </div>
-        <div class="form-row">
+        <div class="f-row">
           <label>Hora</label>
-          <input type="time" id="ev-time"/>
+          <input id="f-time" type="time"/>
         </div>
       </div>
-      <div class="form-row">
+
+      <div class="f-row">
         <label>Repetição</label>
-        <select id="ev-recurrence" onchange="toggleRecurrence()">
+        <select id="f-recur" onchange="toggleRecur()">
           <option value="none">Sem repetição</option>
-          <option value="daily">Todos os dias</option>
-          <option value="weekly">Toda semana</option>
-          <option value="monthly">Todo mês</option>
+          <option value="daily">Diariamente</option>
+          <option value="weekly">Semanalmente</option>
+          <option value="monthly">Mensalmente</option>
         </select>
       </div>
-      <div class="form-row recurrence-block" id="recurrence-end">
+      <div class="f-row recur-extra" id="recur-extra">
         <label>Repetir até</label>
-        <input type="date" id="ev-until"/>
+        <input id="f-until" type="date"/>
       </div>
-      <div class="form-row">
+
+      <div class="f-row">
         <label>Categoria</label>
-        <select id="ev-category">
-          <option value="work">Trabalho</option>
+        <select id="f-cat">
           <option value="personal">Pessoal</option>
+          <option value="work">Trabalho</option>
           <option value="health">Saúde</option>
           <option value="social">Social</option>
           <option value="other">Outro</option>
         </select>
       </div>
-      <div class="form-row">
+
+      <div class="f-row">
         <label>Cor</label>
-        <div class="color-row" id="color-row"></div>
+        <div class="color-swatches" id="color-swatches"></div>
       </div>
-      <div class="form-row">
+
+      <div class="f-row">
         <label>Lembrete</label>
-        <select id="ev-reminder">
+        <select id="f-remind">
           <option value="0">No momento</option>
-          <option value="5">5 minutos antes</option>
-          <option value="15" selected>15 minutos antes</option>
-          <option value="30">30 minutos antes</option>
+          <option value="5">5 min antes</option>
+          <option value="15" selected>15 min antes</option>
+          <option value="30">30 min antes</option>
           <option value="60">1 hora antes</option>
           <option value="1440">1 dia antes</option>
         </select>
       </div>
-      <div class="form-row">
+
+      <div class="f-row">
         <label>Descrição</label>
-        <textarea id="ev-desc" placeholder="Detalhes opcionais..."></textarea>
+        <textarea id="f-desc" placeholder="Notas opcionais..."></textarea>
       </div>
-      <div class="modal-actions">
-        <button class="btn-delete" id="btn-delete" style="display:none" onclick="deleteEvent()">
-          <svg width="16" height="16" style="stroke:var(--pink)"><use href="#ic-trash"/></svg>
-          Excluir
-        </button>
-        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-        <button class="btn-save" onclick="saveEvent()">
-          <svg width="16" height="16"><use href="#ic-check"/></svg>
-          Salvar
-        </button>
-      </div>
+    </div>
+
+    <div class="sheet-actions">
+      <button class="btn-del" id="btn-del" onclick="deleteEv()">
+        <svg width="15" height="15"><use href="#i-trash"/></svg>
+        Excluir
+      </button>
+      <button class="btn-cancel" onclick="closeSheet()">Cancelar</button>
+      <button class="btn-save" onclick="saveEv()">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- NOTIFICATION TOAST -->
-<div class="notif-badge" id="notif-badge">
-  <svg width="16" height="16"><use href="#ic-bell"/></svg>
-  <span id="notif-text"></span>
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg width="16" height="16"><use href="#i-bell"/></svg>
+  <span id="toast-text"></span>
 </div>
 
 <script>
-  const MONTHS_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-  const MONTHS_SHORT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  const DAYS_PT   = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  const COLORS = ['#C060A0','#9B59C4','#E879A8','#7B3FA0','#B07ED6','#D46FBF','#8060C8','#A048B8'];
-  const CAT_COLORS = { work:'#7B3FA0', personal:'#C060A0', health:'#E879A8', social:'#9B59C4', other:'#B07ED6' };
+/* ── constants ── */
+const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+                'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MSHORT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const DSHORT = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const DLONG  = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+const COLORS = ['#C060A0','#9B59C4','#E879A8','#7B3FA0','#B07ED6','#D46FBF','#5DA8A0','#E07050'];
+const CAT_CLR = {work:'#7B3FA0',personal:'#C060A0',health:'#E879A8',social:'#9B59C4',other:'#B07ED6'};
 
-  let today        = new Date();
-  let curDate      = new Date(today);
-  let currentView  = 'month';
-  let events       = JSON.parse(localStorage.getItem('angela_events') || '[]');
-  let editingId    = null;
-  let selectedColor = COLORS[0];
-  let notifTimers  = [];
+/* ── state ── */
+let today  = new Date();
+let cursor = new Date(today);
+let view   = 'month';
+let events = load();
+let editId = null;
+let selClr = COLORS[0];
+let ntTimers = [];
 
-  const isDesktop = () => window.innerWidth >= 700;
+function load() { try { return JSON.parse(localStorage.getItem('ae') || '[]'); } catch { return []; } }
+function save()  { localStorage.setItem('ae', JSON.stringify(events)); }
 
-  function saveStorage() { localStorage.setItem('angela_events', JSON.stringify(events)); }
-  function dateKey(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-  function isSameDay(a,b) { return dateKey(a)===dateKey(b); }
-  function addDays(d,n) { let x=new Date(d); x.setDate(x.getDate()+n); return x; }
+function dk(d) { return `${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`; }
+function p2(n) { return String(n).padStart(2,'0'); }
+function sameDay(a,b) { return dk(a)===dk(b); }
+function addD(d,n) { let x=new Date(d); x.setDate(x.getDate()+n); return x; }
 
-  function expandEvent(ev, from, to) {
-    let result=[];
-    let base=new Date(ev.date+'T00:00:00');
-    if (!ev.recurrence || ev.recurrence==='none') {
-      if (base>=from && base<=to) result.push({date:ev.date});
-      return result;
-    }
-    let until = ev.until ? new Date(ev.until+'T00:00:00') : to;
-    let cur = new Date(base);
-    while (cur<=until && cur<=to) {
-      if (cur>=from) result.push({date:dateKey(cur)});
-      if      (ev.recurrence==='daily')   cur.setDate(cur.getDate()+1);
-      else if (ev.recurrence==='weekly')  cur.setDate(cur.getDate()+7);
-      else if (ev.recurrence==='monthly') cur.setMonth(cur.getMonth()+1);
-      else break;
-    }
-    return result;
+/* expand recurring events into a date range */
+function expand(ev, from, to) {
+  const base = new Date(ev.date+'T00:00:00');
+  if (!ev.recur || ev.recur==='none') {
+    return base>=from && base<=to ? [ev.date] : [];
   }
-
-  function getEventsForDate(dateStr) {
-    let from=new Date(dateStr+'T00:00:00'), to=new Date(dateStr+'T23:59:59'), result=[];
-    events.forEach(ev => expandEvent(ev,from,to).forEach(() => result.push(ev)));
-    return result;
+  const until = ev.until ? new Date(ev.until+'T00:00:00') : to;
+  const res=[]; let cur=new Date(base);
+  while (cur<=until && cur<=to) {
+    if (cur>=from) res.push(dk(cur));
+    if      (ev.recur==='daily')   cur.setDate(cur.getDate()+1);
+    else if (ev.recur==='weekly')  cur.setDate(cur.getDate()+7);
+    else if (ev.recur==='monthly') cur.setMonth(cur.getMonth()+1);
+    else break;
   }
+  return res;
+}
 
-  function navigate(dir) {
-    if (currentView==='month')  curDate.setMonth(curDate.getMonth()+dir);
-    else                        curDate.setDate(curDate.getDate()+dir);
-    render();
-  }
-  function goToday() { curDate=new Date(today); render(); }
+function eventsOn(dateStr) {
+  const f=new Date(dateStr+'T00:00:00'), t=new Date(dateStr+'T23:59:59'), out=[];
+  events.forEach(ev => { if (expand(ev,f,t).length) out.push(ev); });
+  return out;
+}
 
-  function switchView(v) {
-    currentView = v;
-    ['month','day','agenda'].forEach(n => {
-      document.getElementById('view-'+n).style.display = n===v ? 'flex' : 'none';
-    });
-    // bottom nav active state
-    ['month','day','agenda'].forEach(n => {
-      const el = document.getElementById('nav-'+n);
-      if (el) el.classList.toggle('active', n===v);
-    });
-    // desktop buttons
-    document.querySelectorAll('.view-btn-desk').forEach(b => {
-      const t = b.textContent.toLowerCase();
-      b.classList.toggle('active',
-        (v==='month' && t.includes('mê')) ||
-        (v==='day'   && t.includes('dia')) ||
-        (v==='agenda'&& t.includes('agenda'))
-      );
-    });
-    render();
-  }
+/* ── navigation ── */
+function nav(d) {
+  if (view==='month') cursor.setMonth(cursor.getMonth()+d);
+  else                cursor.setDate(cursor.getDate()+d);
+  render();
+}
+function goToday() { cursor=new Date(today); render(); }
 
-  function render() {
-    updateMonthLabel();
-    if (currentView==='month')       renderMonth();
-    else if (currentView==='day')    renderDay();
-    else if (currentView==='agenda') renderAgenda();
-  }
+/* ── view switching ── */
+function setView(v) {
+  view=v;
+  ['month','day','agenda'].forEach(n=>{
+    document.getElementById('v-'+n).classList.toggle('active', n===v);
+    const bn=document.getElementById('bn-'+n);
+    if (bn) bn.classList.toggle('active', n===v);
+  });
+  render();
+}
 
-  function updateMonthLabel() {
-    if (currentView==='month') {
-      document.getElementById('month-label').textContent = `${MONTHS_SHORT[curDate.getMonth()]} ${curDate.getFullYear()}`;
-    } else if (currentView==='day') {
-      document.getElementById('month-label').textContent = `${curDate.getDate()} ${MONTHS_SHORT[curDate.getMonth()]}`;
-    } else {
-      document.getElementById('month-label').textContent = 'Agenda';
-    }
-  }
+/* ── label ── */
+function updateLabel() {
+  let t='';
+  if (view==='month') t=`${MSHORT[cursor.getMonth()]} ${cursor.getFullYear()}`;
+  else if (view==='day') t=`${cursor.getDate()} ${MSHORT[cursor.getMonth()]}`;
+  else t='Agenda';
+  document.getElementById('month-label').textContent=t;
+}
 
-  function renderMonth() {
-    const y=curDate.getFullYear(), m=curDate.getMonth();
-    document.getElementById('dow-row').innerHTML = DAYS_PT.map(d=>`<div class="cal-dow">${d.slice(0,1)}</div>`).join('');
-    const grid = document.getElementById('cal-grid'); grid.innerHTML='';
-    const first=new Date(y,m,1), startDow=first.getDay(), dim=new Date(y,m+1,0).getDate();
-    const rangeStart=new Date(y,m,1-startDow);
-    const total=Math.ceil((startDow+dim)/7)*7;
-    for (let i=0;i<total;i++) {
-      const d=addDays(rangeStart,i), key=dateKey(d);
-      const isToday=isSameDay(d,today), isOther=d.getMonth()!==m;
-      const dayEvs=getEventsForDate(key);
-      const cell=document.createElement('div');
-      cell.className='cal-cell'+(isToday?' today':'')+(isOther?' other-month':'');
-      cell.onclick=()=>{ curDate=new Date(d); switchView('day'); };
-      let evHtml='';
-      if (isDesktop()) {
-        evHtml = dayEvs.slice(0,2).map(ev=>
-          `<div class="cal-ev" style="background:${ev.color||CAT_COLORS[ev.category]||COLORS[0]}"
-            onclick="event.stopPropagation();openEditModal('${ev.id}')">${ev.time?ev.time+' ':''}${ev.title}</div>`
-        ).join('');
-        if (dayEvs.length>2) evHtml+=`<div style="font-size:10px;color:var(--muted);padding:1px 3px;font-weight:700">+${dayEvs.length-2}</div>`;
-      } else {
-        // on mobile show dots for events
-        evHtml = `<div style="display:flex;gap:2px;flex-wrap:wrap;margin-top:2px">` +
-          dayEvs.slice(0,4).map(ev=>
-            `<div class="cal-ev-dot" style="background:${ev.color||CAT_COLORS[ev.category]||COLORS[0]}"></div>`
-          ).join('') + `</div>`;
-      }
-      cell.innerHTML=`<div class="day-num">${d.getDate()}</div>${evHtml}`;
-      grid.appendChild(cell);
-    }
-  }
+/* ── render dispatch ── */
+function render() {
+  updateLabel();
+  if (view==='month')  renderMonth();
+  else if (view==='day') renderDay();
+  else                 renderAgenda();
+}
 
-  function renderDay() {
-    const key=dateKey(curDate);
-    const dayNames = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
-    document.getElementById('day-header-label').textContent =
-      `${dayNames[curDate.getDay()]}, ${curDate.getDate()} de ${MONTHS_PT[curDate.getMonth()]}`;
-    const body=document.getElementById('day-body'); body.innerHTML='';
-    const timeCol=document.createElement('div'); timeCol.className='time-col';
-    for (let h=0;h<24;h++) {
-      const lbl=document.createElement('div'); lbl.className='time-label';
-      lbl.textContent=h===0?'':`${String(h).padStart(2,'0')}:00`;
-      timeCol.appendChild(lbl);
-    }
-    body.appendChild(timeCol);
-    const col=document.createElement('div'); col.className='day-day-col';
-    for (let h=0;h<24;h++) {
-      const slot=document.createElement('div'); slot.className='day-hour';
-      slot.onclick=()=>openModalAt(key,`${String(h).padStart(2,'0')}:00`);
-      col.appendChild(slot);
-    }
-    getEventsForDate(key).forEach(ev=>{
-      if (!ev.time) return;
-      const [hh,mm]=ev.time.split(':').map(Number);
-      const el=document.createElement('div'); el.className='day-ev';
-      el.style.cssText=`top:${(hh*60+mm)/60*56}px;height:52px;background:${ev.color||CAT_COLORS[ev.category]||COLORS[0]}`;
-      el.innerHTML=`<strong>${ev.time}</strong> ${ev.title}`;
-      el.onclick=(e)=>{e.stopPropagation();openEditModal(ev.id);};
-      col.appendChild(el);
-    });
-    body.appendChild(col);
-  }
+/* ── MONTH ── */
+function renderMonth() {
+  const y=cursor.getFullYear(), m=cursor.getMonth();
+  // dow headers (1 letter)
+  document.getElementById('dow-row').innerHTML =
+    DSHORT.map(d=>`<div class="dow-cell">${d[0]}</div>`).join('');
 
-  function renderAgenda() {
-    const list=document.getElementById('agenda-list');
-    const now=new Date();
-    const horizon=new Date(now); horizon.setDate(horizon.getDate()+60);
-    let items=[];
-    events.forEach(ev=>{
-      expandEvent(ev, now, horizon).forEach(e=>{
-        const dt=new Date(e.date+(ev.time?'T'+ev.time:'T00:00'));
-        if (dt>=now) items.push({...ev, _dt:dt, _dateKey:e.date});
-      });
-    });
-    items.sort((a,b)=>a._dt-b._dt);
-    if (!items.length) {
-      list.innerHTML=`<div class="agenda-empty">
-        <svg width="48" height="48" style="color:var(--purple-soft)"><use href="#ic-paw"/></svg>
-        <p>Nenhum evento próximo</p>
-        <p style="font-size:12px;opacity:0.7">Toque no + para criar um evento</p>
-      </div>`;
-      return;
-    }
-    // group by date
-    const groups={};
-    items.forEach(ev=>{
-      if (!groups[ev._dateKey]) groups[ev._dateKey]=[];
-      groups[ev._dateKey].push(ev);
-    });
-    list.innerHTML = Object.entries(groups).map(([dk, evs])=>{
-      const d=new Date(dk+'T12:00:00');
-      const label = isSameDay(d,today) ? 'Hoje' :
-                    isSameDay(d,addDays(today,1)) ? 'Amanhã' :
-                    `${DAYS_PT[d.getDay()]}, ${d.getDate()} de ${MONTHS_PT[d.getMonth()]}`;
-      return `<div class="agenda-day-group">
-        <div class="agenda-day-label">${label}</div>
-        ${evs.map(ev=>`
-          <div class="agenda-item" style="border-left-color:${ev.color||CAT_COLORS[ev.category]||COLORS[0]}"
-               onclick="openEditModal('${ev.id}')">
-            <div class="ag-title">${ev.title}</div>
-            <div class="ag-time">${ev.time ? 'às '+ev.time : 'Dia todo'}${ev.desc?' · '+ev.desc:''}</div>
-          </div>`).join('')}
-      </div>`;
-    }).join('');
-  }
+  const grid=document.getElementById('cal-grid'); grid.innerHTML='';
+  const first=new Date(y,m,1), dow=first.getDay(), dim=new Date(y,m+1,0).getDate();
+  const start=addD(first,-dow), cells=Math.ceil((dow+dim)/7)*7;
 
-  // ── MODAL ──
-  function buildColorRow() {
-    document.getElementById('color-row').innerHTML=COLORS.map(c=>
-      `<div class="color-swatch${c===selectedColor?' selected':''}" style="background:${c}" onclick="pickColor('${c}')"></div>`
+  for (let i=0;i<cells;i++) {
+    const d=addD(start,i), key=dk(d), other=d.getMonth()!==m;
+    const isToday=sameDay(d,today);
+    const evs=eventsOn(key);
+
+    const cell=document.createElement('div');
+    cell.className='cal-cell'+(other?' other':'')+(isToday?' today':'');
+    cell.onclick=()=>{ cursor=new Date(d); setView('day'); };
+
+    const dots = evs.slice(0,5).map(ev=>
+      `<div class="ev-dot" style="background:${ev.color||CAT_CLR[ev.cat]||COLORS[0]}"></div>`
     ).join('');
-  }
-  function pickColor(c) { selectedColor=c; buildColorRow(); }
 
-  function openModal(dateStr, timeStr) {
-    editingId=null;
-    document.getElementById('modal-title').textContent='Novo evento';
-    document.getElementById('ev-title').value='';
-    document.getElementById('ev-date').value=dateStr||dateKey(curDate);
-    document.getElementById('ev-time').value=timeStr||'';
-    document.getElementById('ev-recurrence').value='none';
-    document.getElementById('ev-until').value='';
-    document.getElementById('ev-category').value='personal';
-    document.getElementById('ev-reminder').value='15';
-    document.getElementById('ev-desc').value='';
-    document.getElementById('btn-delete').style.display='none';
-    document.getElementById('recurrence-end').classList.remove('show');
-    selectedColor=COLORS[0]; buildColorRow();
-    document.getElementById('modal-overlay').classList.add('open');
-    setTimeout(()=>document.getElementById('ev-title').focus(), 300);
+    cell.innerHTML=`<div class="d-num">${d.getDate()}</div><div class="dot-row">${dots}</div>`;
+    grid.appendChild(cell);
   }
-  function openModalAt(dateStr, timeStr) { openModal(dateStr, timeStr); }
+}
 
-  function openEditModal(id) {
-    const ev=events.find(e=>e.id===id); if (!ev) return;
-    editingId=id;
-    document.getElementById('modal-title').textContent='Editar evento';
-    document.getElementById('ev-title').value=ev.title;
-    document.getElementById('ev-date').value=ev.date;
-    document.getElementById('ev-time').value=ev.time||'';
-    document.getElementById('ev-recurrence').value=ev.recurrence||'none';
-    document.getElementById('ev-until').value=ev.until||'';
-    document.getElementById('ev-category').value=ev.category||'personal';
-    document.getElementById('ev-reminder').value=String(ev.reminder??15);
-    document.getElementById('ev-desc').value=ev.desc||'';
-    document.getElementById('btn-delete').style.display='flex';
-    toggleRecurrence();
-    selectedColor=ev.color||COLORS[0]; buildColorRow();
-    document.getElementById('modal-overlay').classList.add('open');
+/* ── DAY ── */
+function renderDay() {
+  const key=dk(cursor);
+  document.getElementById('day-hdr').textContent=
+    `${DLONG[cursor.getDay()]}, ${cursor.getDate()} de ${MONTHS[cursor.getMonth()]}`;
+
+  const tl=document.getElementById('day-timeline'); tl.innerHTML='';
+
+  // time labels column
+  const lcol=document.createElement('div'); lcol.className='t-labels';
+  for (let h=0;h<24;h++) {
+    const l=document.createElement('div'); l.className='t-label';
+    l.textContent = h===0 ? '' : `${p2(h)}:00`;
+    lcol.appendChild(l);
+  }
+  tl.appendChild(lcol);
+
+  // slots column
+  const scol=document.createElement('div'); scol.className='t-slots';
+  for (let h=0;h<24;h++) {
+    const s=document.createElement('div'); s.className='t-slot';
+    s.onclick=()=>openNew(key, `${p2(h)}:00`);
+    scol.appendChild(s);
   }
 
-  function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
-
-  function toggleRecurrence() {
-    document.getElementById('recurrence-end').classList.toggle('show',
-      document.getElementById('ev-recurrence').value!=='none');
-  }
-
-  function saveEvent() {
-    const title=document.getElementById('ev-title').value.trim();
-    if (!title) { alert('Por favor, insira um título.'); return; }
-    const ev={
-      id: editingId||Date.now().toString(), title,
-      date:       document.getElementById('ev-date').value,
-      time:       document.getElementById('ev-time').value,
-      recurrence: document.getElementById('ev-recurrence').value,
-      until:      document.getElementById('ev-until').value,
-      category:   document.getElementById('ev-category').value,
-      color:      selectedColor,
-      reminder:   parseInt(document.getElementById('ev-reminder').value),
-      desc:       document.getElementById('ev-desc').value.trim(),
-    };
-    if (editingId) { const idx=events.findIndex(e=>e.id===editingId); if (idx!==-1) events[idx]=ev; }
-    else events.push(ev);
-    saveStorage(); closeModal(); scheduleNotifications(); render();
-  }
-
-  function deleteEvent() {
-    if (!editingId) return;
-    if (!confirm('Excluir este evento?')) return;
-    events=events.filter(e=>e.id!==editingId);
-    saveStorage(); closeModal(); render();
-  }
-
-  // ── NOTIFICATIONS ──
-  function scheduleNotifications() {
-    notifTimers.forEach(clearTimeout); notifTimers=[];
-    const now=new Date(), horizon=new Date(now); horizon.setDate(horizon.getDate()+7);
-    events.forEach(ev=>{
-      if (!ev.time) return;
-      expandEvent(ev,now,horizon).forEach(e=>{
-        const evTime=new Date(e.date+'T'+ev.time);
-        const notifTime=new Date(evTime.getTime()-(ev.reminder||0)*60000);
-        const delay=notifTime-now;
-        if (delay>0) {
-          notifTimers.push(setTimeout(()=>showNotification(ev),delay));
-        }
-      });
-    });
-  }
-
-  function showNotification(ev) {
-    document.getElementById('notif-text').textContent=`${ev.title}${ev.time?' às '+ev.time:''}`;
-    const badge=document.getElementById('notif-badge');
-    badge.classList.add('show');
-    setTimeout(()=>badge.classList.remove('show'),5000);
-    if ('Notification' in window && Notification.permission==='granted') {
-      new Notification('Calendário da Angela', {body:`${ev.title}${ev.time?' às '+ev.time:''}`, icon:'./icon-192.png'});
-    }
-  }
-
-  // close modal on overlay tap
-  document.getElementById('modal-overlay').addEventListener('click', function(e) {
-    if (e.target===this) closeModal();
+  // event blocks
+  eventsOn(key).forEach(ev=>{
+    if (!ev.time) return;
+    const [hh,mm]=ev.time.split(':').map(Number);
+    const el=document.createElement('div'); el.className='day-ev';
+    el.style.cssText=`top:${(hh*60+mm)/60*52}px;height:50px;background:${ev.color||CAT_CLR[ev.cat]||COLORS[0]}`;
+    el.textContent=`${ev.time}  ${ev.title}`;
+    el.onclick=(e)=>{e.stopPropagation();openEdit(ev.id);};
+    scol.appendChild(el);
   });
 
-  // swipe left/right on month view
-  let touchStartX=0;
-  document.getElementById('app-main').addEventListener('touchstart', e=>{ touchStartX=e.touches[0].clientX; }, {passive:true});
-  document.getElementById('app-main').addEventListener('touchend', e=>{
-    const dx=e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx)>60) navigate(dx<0?1:-1);
-  }, {passive:true});
+  tl.appendChild(scol);
+}
 
-  // desktop: show view buttons
-  function checkDesktop() {
-    document.getElementById('desktop-view-btns').style.display = isDesktop() ? 'flex' : 'none';
-  }
-  window.addEventListener('resize', ()=>{ checkDesktop(); render(); });
-  checkDesktop();
+/* ── AGENDA ── */
+function renderAgenda() {
+  const now=new Date(), horizon=addD(now,60);
+  let items=[];
+  events.forEach(ev=>{
+    expand(ev,now,horizon).forEach(d=>{
+      const dt=new Date(d+(ev.time?'T'+ev.time:'T00:00'));
+      if (dt>=now) items.push({...ev,_dt:dt,_dk:d});
+    });
+  });
+  items.sort((a,b)=>a._dt-b._dt);
 
-  // ── INIT ──
-  switchView('month');
-  if ('Notification' in window && Notification.permission==='default') Notification.requestPermission();
-  scheduleNotifications();
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js').catch(e=>console.warn('SW:',e));
+  const inner=document.getElementById('agenda-inner');
+  if (!items.length) {
+    inner.innerHTML=`<div class="ag-empty">
+      <svg width="48" height="48"><use href="#i-cal"/></svg>
+      <p>Nenhum evento próximo</p>
+      <p style="font-size:12px;opacity:0.65">Toque em + para criar um evento</p>
+    </div>`;
+    return;
   }
+
+  const groups={};
+  items.forEach(ev=>{ (groups[ev._dk]=groups[ev._dk]||[]).push(ev); });
+
+  inner.innerHTML = Object.entries(groups).map(([d,evs])=>{
+    const dt=new Date(d+'T12:00:00');
+    const lbl = sameDay(dt,today) ? 'Hoje' :
+                sameDay(dt,addD(today,1)) ? 'Amanhã' :
+                `${DSHORT[dt.getDay()]}, ${dt.getDate()} de ${MONTHS[dt.getMonth()]}`;
+    return `<div class="ag-date-label">${lbl}</div>`+
+      evs.map(ev=>`<div class="ag-item" style="border-left-color:${ev.color||CAT_CLR[ev.cat]||COLORS[0]}"
+        onclick="openEdit('${ev.id}')">
+        <div class="ag-title">${ev.title}</div>
+        <div class="ag-time">${ev.time||'Dia todo'}${ev.desc?' · '+ev.desc:''}</div>
+      </div>`).join('');
+  }).join('');
+}
+
+/* ── MODAL ── */
+function buildSwatches() {
+  document.getElementById('color-swatches').innerHTML = COLORS.map(c=>
+    `<div class="swatch${c===selClr?' on':''}" style="background:${c}" onclick="pickClr('${c}')"></div>`
+  ).join('');
+}
+function pickClr(c) { selClr=c; buildSwatches(); }
+
+function openNew(dateStr, timeStr) {
+  editId=null;
+  document.getElementById('sheet-title').textContent='Novo evento';
+  document.getElementById('f-title').value='';
+  document.getElementById('f-date').value=dateStr||dk(cursor);
+  document.getElementById('f-time').value=timeStr||'';
+  document.getElementById('f-recur').value='none';
+  document.getElementById('f-until').value='';
+  document.getElementById('f-cat').value='personal';
+  document.getElementById('f-remind').value='15';
+  document.getElementById('f-desc').value='';
+  document.getElementById('btn-del').classList.remove('show');
+  document.getElementById('recur-extra').classList.remove('show');
+  selClr=COLORS[0]; buildSwatches();
+  document.getElementById('overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('f-title').focus(),300);
+}
+
+function openEdit(id) {
+  const ev=events.find(e=>e.id===id); if(!ev) return;
+  editId=id;
+  document.getElementById('sheet-title').textContent='Editar evento';
+  document.getElementById('f-title').value=ev.title;
+  document.getElementById('f-date').value=ev.date;
+  document.getElementById('f-time').value=ev.time||'';
+  document.getElementById('f-recur').value=ev.recur||'none';
+  document.getElementById('f-until').value=ev.until||'';
+  document.getElementById('f-cat').value=ev.cat||'personal';
+  document.getElementById('f-remind').value=String(ev.remind??15);
+  document.getElementById('f-desc').value=ev.desc||'';
+  document.getElementById('btn-del').classList.add('show');
+  toggleRecur();
+  selClr=ev.color||COLORS[0]; buildSwatches();
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeSheet() { document.getElementById('overlay').classList.remove('open'); }
+
+function overlayTap(e) { if (e.target===document.getElementById('overlay')) closeSheet(); }
+
+function toggleRecur() {
+  document.getElementById('recur-extra').classList.toggle('show',
+    document.getElementById('f-recur').value!=='none');
+}
+
+function saveEv() {
+  const title=document.getElementById('f-title').value.trim();
+  if (!title) { alert('Por favor, insira um título.'); return; }
+  const ev={
+    id:    editId||String(Date.now()),
+    title,
+    date:  document.getElementById('f-date').value,
+    time:  document.getElementById('f-time').value,
+    recur: document.getElementById('f-recur').value,
+    until: document.getElementById('f-until').value,
+    cat:   document.getElementById('f-cat').value,
+    color: selClr,
+    remind:parseInt(document.getElementById('f-remind').value),
+    desc:  document.getElementById('f-desc').value.trim(),
+  };
+  if (editId) { const i=events.findIndex(e=>e.id===editId); if(i!==-1) events[i]=ev; }
+  else events.push(ev);
+  save(); closeSheet(); scheduleNotifs(); render();
+}
+
+function deleteEv() {
+  if (!editId||!confirm('Excluir este evento?')) return;
+  events=events.filter(e=>e.id!==editId);
+  save(); closeSheet(); render();
+}
+
+/* ── notifications ── */
+function scheduleNotifs() {
+  ntTimers.forEach(clearTimeout); ntTimers=[];
+  const now=new Date(), h=addD(now,7);
+  events.forEach(ev=>{
+    if (!ev.time) return;
+    expand(ev,now,h).forEach(d=>{
+      const t=new Date(d+'T'+ev.time);
+      const fire=new Date(t.getTime()-(ev.remind||0)*60000);
+      const ms=fire-now;
+      if (ms>0) ntTimers.push(setTimeout(()=>showToast(ev),ms));
+    });
+  });
+}
+
+function showToast(ev) {
+  document.getElementById('toast-text').textContent=`${ev.title}${ev.time?' às '+ev.time:''}`;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),5000);
+  if (Notification?.permission==='granted')
+    new Notification('Calendário da Angela',{body:`${ev.title}${ev.time?' às '+ev.time:''}`,icon:'./icon-192.png'});
+}
+
+/* ── swipe gesture ── */
+let swX=0;
+document.getElementById('app-scroll').addEventListener('touchstart',e=>{swX=e.touches[0].clientX;},{passive:true});
+document.getElementById('app-scroll').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-swX;
+  if (Math.abs(dx)>55) nav(dx<0?1:-1);
+},{passive:true});
+
+/* ── boot ── */
+render();
+if (Notification?.permission==='default') Notification.requestPermission();
+scheduleNotifs();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 </script>
 </body>
 </html>
