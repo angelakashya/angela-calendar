@@ -1,0 +1,15 @@
+{
+  "name": "Calendário da Angela",
+  "short_name": "Angela",
+  "description": "Calendário pessoal da Angela",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#4A1F6E",
+  "theme_color": "#4A1F6E",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["productivity", "lifestyle"]
+}
